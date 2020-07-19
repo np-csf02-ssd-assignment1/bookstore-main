@@ -30,6 +30,13 @@
         </nav>
     </header>
     <div class="container">
+        <environment include="Development">
+            <div class="alert alert-danger" role="alert">
+                <p>
+                    <b>Development Mode is active.</b>
+                </p>
+            </div>
+        </environment>
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
