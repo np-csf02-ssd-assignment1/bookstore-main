@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using WebFrontend.Data;
 using WebFrontend.Model;
 
-namespace WebFrontend.Pages.Books
+namespace WebFrontend.Pages.Orders
 {
     public class IndexModel : PageModel
     {
@@ -19,11 +19,11 @@ namespace WebFrontend.Pages.Books
             _context = context;
         }
 
-        public IList<Book> Book { get; set; }
+        public IList<Order> Order { get; set; }
 
         public async Task OnGetAsync()
         {
-            Book = await _context.Book.ToListAsync();
+            Order = await _context.Order.ToListAsync();
         }
     }
 }
