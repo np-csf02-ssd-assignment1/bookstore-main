@@ -9,7 +9,7 @@ namespace WebFrontend.Data
 {
     public class WebFrontendContext : DbContext
     {
-        public WebFrontendContext (DbContextOptions<WebFrontendContext> options)
+        public WebFrontendContext(DbContextOptions<WebFrontendContext> options)
             : base(options)
         {
         }
