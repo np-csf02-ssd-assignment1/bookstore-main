@@ -19,7 +19,7 @@ namespace WebFrontend.Pages.Books
             _context = context;
         }
 
-        public IList<Book> Book { get; set; }
+        public IList<Book> Book { get;set; }
 
         public async Task OnGetAsync()
         {

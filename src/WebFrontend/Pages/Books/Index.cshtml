@@ -14,6 +14,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Book[0].BookID)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Book[0].ISBN)
             </th>
             <th>
@@ -34,6 +37,9 @@
     <tbody>
 @foreach (var item in Model.Book) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookID)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ISBN)
             </td>

@@ -8,6 +8,7 @@ namespace WebFrontend.Model
 {
     public class Book : Product
     {
+        public int BookID { get; set; }
         public string ISBN { get; set; }
         public List<Author> Authors { get; set; }
         public List<Publisher> Publishers { get; set; }
