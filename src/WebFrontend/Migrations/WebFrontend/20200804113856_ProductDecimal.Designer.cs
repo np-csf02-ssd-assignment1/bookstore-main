@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebFrontend.Data;
 
 namespace WebFrontend.Migrations.WebFrontend
 {
     [DbContext(typeof(WebFrontendContext))]
-    partial class WebFrontendContextModelSnapshot : ModelSnapshot
+    [Migration("20200804113856_ProductDecimal")]
+    partial class ProductDecimal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,9 +97,6 @@ namespace WebFrontend.Migrations.WebFrontend
             modelBuilder.Entity("WebFrontend.Model.Book", b =>
                 {
                     b.HasBaseType("WebFrontend.Model.Product");
-
-                    b.Property<int>("BookID")
-                        .HasColumnType("int");
 
                     b.Property<string>("ISBN")
                         .HasColumnType("nvarchar(max)");
