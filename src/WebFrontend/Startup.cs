@@ -65,8 +65,15 @@ namespace WebFrontend
                     .RemoveServerHeader()
                     .AddContentSecurityPolicy(configure =>
                     {
-                        configure.AddBaseUri().Self();
-                        configure.AddObjectSrc().None();
+                        configure.AddDefaultSrc().None();
+                        configure.AddScriptSrc()
+                            .Self()
+                            .From("https://cdnjs.cloudflare.com");
+                        configure.AddStyleSrc()
+                            .Self()
+                            .From("https://cdnjs.cloudflare.com");
+                        configure.AddImgSrc().Self();
+                        configure.AddBaseUri().None();
                         configure.AddFormAction().Self();
                         configure.AddFrameAncestors().None();
                         configure.AddUpgradeInsecureRequests();
@@ -95,6 +102,7 @@ namespace WebFrontend
                         configure.AddPayment().None();
                         configure.AddPictureInPicture().None();
                         configure.AddCustomFeature("publickey-credentials-get").None();
+                        configure.AddCustomFeature("require-sri-for script style");
                         configure.AddSyncXHR().None();
                         configure.AddCustomFeature("unoptimized-images").None();
                         configure.AddCustomFeature("unsized-media").None();
