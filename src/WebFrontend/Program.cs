@@ -20,7 +20,11 @@ namespace WebFrontend
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>()
+                    .ConfigureKestrel(configureOptions =>
+                    {
+                        configureOptions.AddServerHeader = false;
+                    });
                 });
     }
 }
