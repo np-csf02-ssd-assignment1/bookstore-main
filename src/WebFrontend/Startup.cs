@@ -52,7 +52,7 @@ namespace WebFrontend
                     .AddFrameOptionsDeny()
                     .AddXssProtectionBlock()
                     .AddContentTypeOptionsNoSniff()
-                    .AddReferrerPolicyNone()
+                    .AddReferrerPolicyNoReferrer()
                     .RemoveServerHeader()
                     .AddContentSecurityPolicy(configure =>
                     {
