@@ -10,8 +10,8 @@ using WebFrontend.Areas.Identity.Data;
 namespace WebFrontend.Migrations
 {
     [DbContext(typeof(WebFrontendIdentityDbContext))]
-    [Migration("20200801062614_CreateIdentitySchema")]
-    partial class CreateIdentitySchema
+    [Migration("20200806133827_AddIdentity")]
+    partial class AddIdentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
