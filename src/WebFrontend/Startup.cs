@@ -68,10 +68,14 @@ namespace WebFrontend
                         configure.AddDefaultSrc().None();
                         configure.AddScriptSrc()
                             .Self()
-                            .From("https://cdnjs.cloudflare.com");
+                            .From("https://cdnjs.cloudflare.com")
+                            .From("https://unpkg.com");
                         configure.AddStyleSrc()
                             .Self()
-                            .From("https://cdnjs.cloudflare.com");
+                            .From("https://cdnjs.cloudflare.com")
+                            .From("https://fonts.googleapis.com")
+                            .From("https://unpkg.com");
+                        configure.AddFontSrc().From("https://fonts.gstatic.com");
                         configure.AddImgSrc().Self();
                         configure.AddBaseUri().None();
                         configure.AddFormAction().Self();
