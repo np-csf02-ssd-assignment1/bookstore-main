@@ -11,8 +11,11 @@ namespace WebFrontend.Model
     {
         public int OrderID { get; set; }
         public string UserID { get; set; }
+        public int CartID { get; set; }
         [DataType(DataType.Date)]
         public DateTime CreatedTime { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime ShippingTime { get; set; }
         public List<ShipmentType> ShipmentID { get; set; }
         public List<PaymentType> PaymentID { get; set; }
         public string ShippingAddress { get; set; }

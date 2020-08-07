@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using WebFrontend.Data;
 using WebFrontend.Model;
 
-namespace WebFrontend.Pages.Orders
+namespace WebFrontend.Pages.Admin.Books
 {
+    [Authorize(Roles = "Admin")]
     public class IndexModel : PageModel
     {
         private readonly WebFrontend.Data.WebFrontendContext _context;
@@ -21,13 +21,11 @@ namespace WebFrontend.Pages.Orders
             _context = context;
         }
 
-        public IList<Order> Order { get; set; }
-        public string UserID { get; set; }
+        public IList<Book> Book { get; set; }
 
         public async Task OnGetAsync()
         {
-            Order = await _context.Order.ToListAsync();
-            UserID = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Book = await _context.Book.ToListAsync();
         }
     }
 }

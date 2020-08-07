@@ -15,9 +15,8 @@ namespace WebFrontend.Data
         }
 
         public DbSet<WebFrontend.Model.Product> Product { get; set; }
-
         public DbSet<WebFrontend.Model.Book> Book { get; set; }
-
         public DbSet<WebFrontend.Model.Order> Order { get; set; }
+        public DbSet<Cart> ShoppingCartItems { get; set; }
     }
 }

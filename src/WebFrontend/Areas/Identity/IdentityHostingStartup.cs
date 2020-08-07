@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebFrontend.Areas.Identity.Data;
+using WebFrontend.Model;
 
 [assembly: HostingStartup(typeof(WebFrontend.Areas.Identity.IdentityHostingStartup))]
 namespace WebFrontend.Areas.Identity
@@ -20,8 +21,10 @@ namespace WebFrontend.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("WebFrontendIdentityDbContextConnection")));
 
-                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddEntityFrameworkStores<WebFrontendIdentityDbContext>();
+                services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddRoles<ApplicationRole>()
+                    .AddEntityFrameworkStores<WebFrontendIdentityDbContext>()
+                    .AddDefaultTokenProviders();
             });
         }
     }
