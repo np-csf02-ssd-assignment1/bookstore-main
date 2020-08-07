@@ -16,8 +16,9 @@ namespace WebFrontend.Model
         public DateTime CreatedTime { get; set; }
         [DataType(DataType.Date)]
         public DateTime ShippingTime { get; set; }
-        public List<ShipmentType> ShipmentID { get; set; }
-        public List<PaymentType> PaymentID { get; set; }
+        [ForeignKey("PaymentType")]
+        public int PaymentID { get; set; }
+        public virtual PaymentType PaymentType { get; set; }
         public string ShippingAddress { get; set; }
         public string BillingAddress { get; set; }
         [Column(TypeName = "decimal(18,2)")]

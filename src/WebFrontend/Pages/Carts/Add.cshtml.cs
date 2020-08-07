@@ -31,6 +31,7 @@ namespace WebFrontend.Pages.Carts
         [BindProperty]
         public Cart Cart { get; set; }
         public string SQLmessage { get; set; }
+        public IList<Product> Products { get; set; }
         public IList<Cart> CurrentCart { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -70,6 +71,10 @@ namespace WebFrontend.Pages.Carts
             {
                 Cart.CartId = CurrentCart[CurrentCart.Count - 1].CartId;
             }
+
+            SQLmessage = "Select * From Product Where ID = '" + Cart.ProductId + "'";
+            Products = await _context.Product.FromSqlRaw(SQLmessage).ToListAsync();
+            Cart.Cost = Products[0].Price;
 
             _context.ShoppingCartItems.Add(Cart);
             await _context.SaveChangesAsync();

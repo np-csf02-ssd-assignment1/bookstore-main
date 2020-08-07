@@ -18,6 +18,8 @@
     <Compile Remove="Migrations\20200806131440_ReAddIdentity2.Designer.cs" />
     <Compile Remove="Migrations\20200807033626_AddIdentityContextUser.cs" />
     <Compile Remove="Migrations\20200807033626_AddIdentityContextUser.Designer.cs" />
+    <Compile Remove="Migrations\WebFrontend\20200807110605_FKForProductTest.cs" />
+    <Compile Remove="Migrations\WebFrontend\20200807110605_FKForProductTest.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
