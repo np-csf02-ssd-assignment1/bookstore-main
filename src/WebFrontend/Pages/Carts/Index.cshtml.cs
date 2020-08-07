@@ -21,7 +21,7 @@ namespace WebFrontend.Pages.Carts
             _context = context;
         }
 
-        public IList<Cart> Cart { get;set; }
+        public IList<Cart> Cart { get; set; }
 
         public async Task OnGetAsync()
         {

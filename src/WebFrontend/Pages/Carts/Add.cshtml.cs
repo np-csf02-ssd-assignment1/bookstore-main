@@ -49,7 +49,7 @@ namespace WebFrontend.Pages.Carts
             {
                 SQLmessage = "Select * From ShoppingCartItems";
                 IList<Cart> AllCart = await _context.ShoppingCartItems.FromSqlRaw(SQLmessage).ToListAsync();
-                if(AllCart.Count == 0)
+                if (AllCart.Count == 0)
                 {
                     Cart.CartId = 1;
                 }
