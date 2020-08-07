@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace WebFrontend
 {
@@ -20,11 +14,12 @@ namespace WebFrontend
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>()
-                    .ConfigureKestrel(configureOptions =>
-                    {
-                        configureOptions.AddServerHeader = false;
-                    });
+                    webBuilder
+                        .UseStartup<Startup>()
+                        .ConfigureKestrel(configureOptions =>
+                        {
+                            configureOptions.AddServerHeader = false;
+                        });
                 });
     }
 }

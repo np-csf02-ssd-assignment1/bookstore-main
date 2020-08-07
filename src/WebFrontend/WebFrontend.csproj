@@ -7,22 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Pages\NewFolder1\**" />
-    <Content Remove="Pages\NewFolder1\**" />
-    <EmbeddedResource Remove="Pages\NewFolder1\**" />
-    <None Remove="Pages\NewFolder1\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Migrations\20200806131440_ReAddIdentity2.cs" />
-    <Compile Remove="Migrations\20200806131440_ReAddIdentity2.Designer.cs" />
-    <Compile Remove="Migrations\20200807033626_AddIdentityContextUser.cs" />
-    <Compile Remove="Migrations\20200807033626_AddIdentityContextUser.Designer.cs" />
-    <Compile Remove="Migrations\WebFrontend\20200807110605_FKForProductTest.cs" />
-    <Compile Remove="Migrations\WebFrontend\20200807110605_FKForProductTest.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.6">
@@ -35,8 +20,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Graph" Version="3.9.0" />
+    <PackageReference Include="Microsoft.Graph.Auth" Version="1.0.0-preview.5" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.11.2" />
+    <PackageReference Include="SendGrid" Version="9.20.0" />
   </ItemGroup>
 
 </Project>
