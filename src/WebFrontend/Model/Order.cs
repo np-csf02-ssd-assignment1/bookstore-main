@@ -13,6 +13,7 @@ namespace WebFrontend.Model
         public string UserID { get; set; }
         [DataType(DataType.Date)]
         public DateTime CreatedTime { get; set; }
+        public DateTime ShippingTime { get; set; }
         public List<ShipmentType> ShipmentID { get; set; }
         public List<PaymentType> PaymentID { get; set; }
         public string ShippingAddress { get; set; }

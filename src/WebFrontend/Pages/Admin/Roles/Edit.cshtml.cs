@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Identity;
 using WebFrontend.Model;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebFrontend.Pages.Admin.Roles
 {
+    [Authorize(Roles = "Admin")]
     public class EditModel : PageModel
     {
         private readonly RoleManager<ApplicationRole> _roleManager;

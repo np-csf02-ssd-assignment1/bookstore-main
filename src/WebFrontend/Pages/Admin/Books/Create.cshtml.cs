@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebFrontend.Data;
 using WebFrontend.Model;
 
-namespace WebFrontend.Pages.Books
+namespace WebFrontend.Pages.Admin.Books
 {
+    [Authorize(Roles = "Admin")]
     public class CreateModel : PageModel
     {
         private readonly WebFrontend.Data.WebFrontendContext _context;

@@ -8,9 +8,11 @@ using WebFrontend.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebFrontend.Pages.Admin.Roles
 {
+    [Authorize(Roles = "Admin")]
     public class ManageModel : PageModel
     {
         private readonly WebFrontend.Areas.Identity.Data.WebFrontendIdentityDbContext _context;

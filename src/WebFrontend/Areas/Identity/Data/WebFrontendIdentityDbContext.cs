@@ -25,5 +25,6 @@ namespace WebFrontend.Areas.Identity.Data
         }
 
         public DbSet<ApplicationRole> ApplicationRoles { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
     }
 }

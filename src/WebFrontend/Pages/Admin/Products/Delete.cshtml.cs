@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebFrontend.Data;
+using WebFrontend.Model;
 
-namespace WebFrontend.Model
+namespace WebFrontend.Pages.Admin.Products
 {
-    public class EditModel : PageModel
+    [Authorize(Roles = "Admin")]
+    public class DeleteModel : PageModel
     {
         private readonly WebFrontend.Data.WebFrontendContext _context;
 
-        public EditModel(WebFrontend.Data.WebFrontendContext context)
+        public DeleteModel(WebFrontend.Data.WebFrontendContext context)
         {
             _context = context;
         }
@@ -38,39 +40,22 @@ namespace WebFrontend.Model
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return Page();
+                return NotFound();
             }
 
-            _context.Attach(Product).State = EntityState.Modified;
+            Product = await _context.Product.FindAsync(id);
 
-            try
+            if (Product != null)
             {
+                _context.Product.Remove(Product);
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(Product.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
             }
 
             return RedirectToPage("./Index");
-        }
-
-        private bool ProductExists(int id)
-        {
-            return _context.Product.Any(e => e.ID == id);
         }
     }
 }

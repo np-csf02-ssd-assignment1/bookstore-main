@@ -14,9 +14,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Order[0].UserID)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Order[0].CreatedTime)
             </th>
             <th>
@@ -34,9 +31,6 @@
     <tbody>
 @foreach (var item in Model.Order) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserID)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedTime)
             </td>
