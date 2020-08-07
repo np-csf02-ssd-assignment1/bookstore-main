@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebFrontend.Data;
+using WebFrontend.Services.EmailSender.SendGrid;
+using WebFrontend.Services.EmailSender.MSGraph;
 
 namespace WebFrontend
 {
@@ -28,6 +27,22 @@ namespace WebFrontend
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            var msGraphEmailSenderOptions = Configuration.GetSection("EmailSender:MSGraph");
+            var sendGridEmailSenderOptions = Configuration.GetSection("EmailSender:SendGrid").Get<WebFrontend.Services.EmailSender.SendGrid.AuthMessageSenderOptions>();
+
+            Console.WriteLine(JsonSerializer.Serialize(msGraphEmailSenderOptions));
+
+            Console.WriteLine("Checking email options");
+            if (msGraphEmailSenderOptions != null)
+            {
+                services.AddMSGraphEmailSender(msGraphEmailSenderOptions);
+                Console.WriteLine("MS Graph configured.");
+            }
+            else if (sendGridEmailSenderOptions != null)
+            {
+                services.AddSendGridEmailSender(sendGridEmailSenderOptions);
+                Console.WriteLine("SendGrid configured.");
+            }
 
             services.ConfigureApplicationCookie(options =>
             {
