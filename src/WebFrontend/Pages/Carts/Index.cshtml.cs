@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +22,14 @@ namespace WebFrontend.Pages.Carts
             _context = context;
         }
 
+        public string SQLmessage { get; private set; }
         public IList<Cart> Cart { get; set; }
 
         public async Task OnGetAsync()
         {
-            Cart = await _context.ShoppingCartItems.ToListAsync();
+            string UserID = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            SQLmessage = "Select * From ShoppingCartItems where UserId ='" + UserID + "' AND Paid = 'False'";
+            Cart = await _context.ShoppingCartItems.FromSqlRaw(SQLmessage).ToListAsync();
         }
     }
 }
