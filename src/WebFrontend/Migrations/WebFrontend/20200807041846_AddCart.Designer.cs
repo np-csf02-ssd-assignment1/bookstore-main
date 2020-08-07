@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebFrontend.Data;
 
 namespace WebFrontend.Migrations.WebFrontend
 {
     [DbContext(typeof(WebFrontendContext))]
-    partial class WebFrontendContextModelSnapshot : ModelSnapshot
+    [Migration("20200807041846_AddCart")]
+    partial class AddCart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,19 +46,14 @@ namespace WebFrontend.Migrations.WebFrontend
 
             modelBuilder.Entity("WebFrontend.Model.Cart", b =>
                 {
-                    b.Property<int>("ItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("ItemId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CartId")
-                        .HasColumnType("int");
+                    b.Property<string>("CartId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("Paid")
-                        .HasColumnType("bit");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -64,10 +61,9 @@ namespace WebFrontend.Migrations.WebFrontend
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("ItemId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ShoppingCartItems");
                 });
@@ -81,9 +77,6 @@ namespace WebFrontend.Migrations.WebFrontend
 
                     b.Property<string>("BillingAddress")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CartID")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
@@ -216,6 +209,15 @@ namespace WebFrontend.Migrations.WebFrontend
                     b.HasOne("WebFrontend.Model.Book", "Book")
                         .WithMany("Authors")
                         .HasForeignKey("BookID");
+                });
+
+            modelBuilder.Entity("WebFrontend.Model.Cart", b =>
+                {
+                    b.HasOne("WebFrontend.Model.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("WebFrontend.Model.PaymentType", b =>

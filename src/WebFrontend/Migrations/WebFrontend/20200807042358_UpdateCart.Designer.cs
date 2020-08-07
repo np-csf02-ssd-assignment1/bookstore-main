@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebFrontend.Data;
 
 namespace WebFrontend.Migrations.WebFrontend
 {
     [DbContext(typeof(WebFrontendContext))]
-    partial class WebFrontendContextModelSnapshot : ModelSnapshot
+    [Migration("20200807042358_UpdateCart")]
+    partial class UpdateCart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,19 +46,11 @@ namespace WebFrontend.Migrations.WebFrontend
 
             modelBuilder.Entity("WebFrontend.Model.Cart", b =>
                 {
-                    b.Property<int>("ItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CartId")
-                        .HasColumnType("int");
+                    b.Property<string>("CartId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("Paid")
-                        .HasColumnType("bit");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -67,7 +61,7 @@ namespace WebFrontend.Migrations.WebFrontend
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ItemId");
+                    b.HasKey("CartId");
 
                     b.ToTable("ShoppingCartItems");
                 });
@@ -81,9 +75,6 @@ namespace WebFrontend.Migrations.WebFrontend
 
                     b.Property<string>("BillingAddress")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CartID")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");

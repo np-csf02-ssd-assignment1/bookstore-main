@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using WebFrontend.Data;
 using WebFrontend.Model;
 
-namespace WebFrontend.Pages.Orders
+namespace WebFrontend.Pages.Carts
 {
+    [Authorize(Roles = "Admin, User")]
     public class DeleteModel : PageModel
     {
         private readonly WebFrontend.Data.WebFrontendContext _context;
@@ -20,7 +22,7 @@ namespace WebFrontend.Pages.Orders
         }
 
         [BindProperty]
-        public Order Order { get; set; }
+        public Cart Cart { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,9 +31,9 @@ namespace WebFrontend.Pages.Orders
                 return NotFound();
             }
 
-            Order = await _context.Order.FirstOrDefaultAsync(m => m.OrderID == id);
+            Cart = await _context.ShoppingCartItems.FirstOrDefaultAsync(m => m.ItemId == id);
 
-            if (Order == null)
+            if (Cart == null)
             {
                 return NotFound();
             }
@@ -45,11 +47,11 @@ namespace WebFrontend.Pages.Orders
                 return NotFound();
             }
 
-            Order = await _context.Order.FindAsync(id);
+            Cart = await _context.ShoppingCartItems.FindAsync(id);
 
-            if (Order != null)
+            if (Cart != null)
             {
-                _context.Order.Remove(Order);
+                _context.ShoppingCartItems.Remove(Cart);
                 await _context.SaveChangesAsync();
             }
 

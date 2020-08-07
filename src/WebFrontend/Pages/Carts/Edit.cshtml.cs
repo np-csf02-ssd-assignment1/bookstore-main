@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,8 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using WebFrontend.Data;
 using WebFrontend.Model;
 
-namespace WebFrontend.Pages.Orders
+namespace WebFrontend.Pages.Carts
 {
+    [Authorize(Roles = "Admin, User")]
     public class EditModel : PageModel
     {
         private readonly WebFrontend.Data.WebFrontendContext _context;
@@ -21,7 +23,7 @@ namespace WebFrontend.Pages.Orders
         }
 
         [BindProperty]
-        public Order Order { get; set; }
+        public Cart Cart { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,9 +32,9 @@ namespace WebFrontend.Pages.Orders
                 return NotFound();
             }
 
-            Order = await _context.Order.FirstOrDefaultAsync(m => m.OrderID == id);
+            Cart = await _context.ShoppingCartItems.FirstOrDefaultAsync(m => m.ItemId == id);
 
-            if (Order == null)
+            if (Cart == null)
             {
                 return NotFound();
             }
@@ -48,7 +50,7 @@ namespace WebFrontend.Pages.Orders
                 return Page();
             }
 
-            _context.Attach(Order).State = EntityState.Modified;
+            _context.Attach(Cart).State = EntityState.Modified;
 
             try
             {
@@ -56,7 +58,7 @@ namespace WebFrontend.Pages.Orders
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrderExists(Order.OrderID))
+                if (!CartExists(Cart.ItemId))
                 {
                     return NotFound();
                 }
@@ -69,9 +71,9 @@ namespace WebFrontend.Pages.Orders
             return RedirectToPage("./Index");
         }
 
-        private bool OrderExists(int id)
+        private bool CartExists(int id)
         {
-            return _context.Order.Any(e => e.OrderID == id);
+            return _context.ShoppingCartItems.Any(e => e.ItemId == id);
         }
     }
 }

@@ -32,10 +32,12 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                test@Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a>
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                @{ var itemID = "/Carts/Add/" + item.ID;}
+                <a asp-page="@itemID" asp-route-id="@item.ID">Add to cart</a>
             </td>
         </tr>
 }
