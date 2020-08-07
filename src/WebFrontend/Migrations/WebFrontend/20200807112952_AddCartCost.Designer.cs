@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebFrontend.Data;
 
 namespace WebFrontend.Migrations.WebFrontend
 {
     [DbContext(typeof(WebFrontendContext))]
-    partial class WebFrontendContextModelSnapshot : ModelSnapshot
+    [Migration("20200807112952_AddCartCost")]
+    partial class AddCartCost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,8 +54,8 @@ namespace WebFrontend.Migrations.WebFrontend
                     b.Property<int>("CartId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Cost")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -94,6 +96,9 @@ namespace WebFrontend.Migrations.WebFrontend
                     b.Property<int>("PaymentID")
                         .HasColumnType("int");
 
+                    b.Property<int>("ShipmentID")
+                        .HasColumnType("int");
+
                     b.Property<string>("ShippingAddress")
                         .HasColumnType("nvarchar(max)");
 
@@ -109,6 +114,8 @@ namespace WebFrontend.Migrations.WebFrontend
                     b.HasKey("OrderID");
 
                     b.HasIndex("PaymentID");
+
+                    b.HasIndex("ShipmentID");
 
                     b.ToTable("Order");
                 });
@@ -178,6 +185,21 @@ namespace WebFrontend.Migrations.WebFrontend
                     b.ToTable("Publisher");
                 });
 
+            modelBuilder.Entity("WebFrontend.Model.ShipmentType", b =>
+                {
+                    b.Property<int>("ShipmentTypeID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ShipmentTypeID");
+
+                    b.ToTable("ShipmentType");
+                });
+
             modelBuilder.Entity("WebFrontend.Model.Book", b =>
                 {
                     b.HasBaseType("WebFrontend.Model.Product");
@@ -206,6 +228,12 @@ namespace WebFrontend.Migrations.WebFrontend
                     b.HasOne("WebFrontend.Model.PaymentType", "PaymentType")
                         .WithMany()
                         .HasForeignKey("PaymentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebFrontend.Model.ShipmentType", "ShipmentType")
+                        .WithMany()
+                        .HasForeignKey("ShipmentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
