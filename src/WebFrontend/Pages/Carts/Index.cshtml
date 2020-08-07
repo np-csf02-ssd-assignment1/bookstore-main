@@ -42,10 +42,22 @@
                 </td>
             </tr>
         }
+        <tr>
+            <td>
+                Total Price:
+            </td>
+            <td>
+                @Model.TotalPrice
+            </td>
+        </tr>
     </tbody>
 </table>
 
 <hr />
-<p>
-    <a asp-page="/Orders/Checkout">Check Out</a>
+<p id="Checkout">
+    @if (Model.TotalPrice != 0)
+    {
+        <a asp-page="/Orders/Checkout">Check Out</a>
+    }
+
 </p>

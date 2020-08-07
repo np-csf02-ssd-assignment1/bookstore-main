@@ -24,12 +24,17 @@ namespace WebFrontend.Pages.Carts
 
         public string SQLmessage { get; private set; }
         public IList<Cart> Cart { get; set; }
+        public decimal TotalPrice { get; set; }
 
         public async Task OnGetAsync()
         {
             string UserID = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             SQLmessage = "Select * From ShoppingCartItems where UserId ='" + UserID + "' AND Paid = 'False'";
             Cart = await _context.ShoppingCartItems.FromSqlRaw(SQLmessage).ToListAsync();
+            foreach (Cart item in Cart)
+            {
+                TotalPrice += (item.Cost * item.Quantity);
+            }
         }
     }
 }
