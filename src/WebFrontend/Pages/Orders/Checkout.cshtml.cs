@@ -42,7 +42,7 @@ namespace WebFrontend.Pages.Orders
             SQLmessage = "Select * From ShoppingCartItems Where UserId = '" + Order.UserID + "' AND Paid = 'False'";
             AllCart = await _context.ShoppingCartItems.FromSqlRaw(SQLmessage).ToListAsync();
             Order.CartID = AllCart[AllCart.Count - 1].CartId;
-            foreach(Cart item in AllCart)
+            foreach (Cart item in AllCart)
             {
                 Order.TotalPrice += (item.Cost * item.Quantity);
             }
