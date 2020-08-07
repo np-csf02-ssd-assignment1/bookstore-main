@@ -43,6 +43,8 @@ namespace WebFrontend.Pages.Carts
             }
             string UserID = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             Cart.UserId = UserID;
+            Cart.DateCreated = DateTime.Now;
+
             SQLmessage = "Select * From ShoppingCartItems Where UserId = '" + Cart.UserId + "'";
             CurrentCart = await _context.ShoppingCartItems.FromSqlRaw(SQLmessage).ToListAsync();
             if (CurrentCart.Count == 0)
@@ -68,6 +70,7 @@ namespace WebFrontend.Pages.Carts
             {
                 Cart.CartId = CurrentCart[CurrentCart.Count - 1].CartId;
             }
+
             _context.ShoppingCartItems.Add(Cart);
             await _context.SaveChangesAsync();
 
