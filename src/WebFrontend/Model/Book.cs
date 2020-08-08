@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WebFrontend.Attributes;
 
 namespace WebFrontend.Model
 {
@@ -13,5 +15,7 @@ namespace WebFrontend.Model
         public List<Publisher> Publishers { get; set; }
         [DataType(DataType.Date)]
         public DateTime PublishedOn { get; set; }
+        [AllowedExtensions(new string[] { ".pdf" })]
+        public IFormFile PDFFile { get; set; }
     }
 }
