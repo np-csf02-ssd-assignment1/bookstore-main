@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using WebFrontend.Model;
 
 namespace WebFrontend.Data
@@ -18,5 +19,6 @@ namespace WebFrontend.Data
         public DbSet<Book> Book { get; set; }
         public DbSet<Order> OrderList { get; set; }
         public DbSet<Cart> ShoppingCartItems { get; set; }
+        public DbSet<WebFrontend.Model.AuditEntry> AuditEntries { get; set; }
     }
 }

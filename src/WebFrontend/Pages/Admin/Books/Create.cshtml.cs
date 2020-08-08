@@ -14,9 +14,9 @@ namespace WebFrontend.Pages.Admin.Books
     [Authorize(Roles = "Admin")]
     public class CreateModel : PageModel
     {
-        private readonly WebFrontend.Data.WebFrontendContext _context;
+        private readonly WebFrontend.Data.WebFrontendAuditableContext _context;
 
-        public CreateModel(WebFrontend.Data.WebFrontendContext context)
+        public CreateModel(WebFrontend.Data.WebFrontendAuditableContext context)
         {
             _context = context;
         }
