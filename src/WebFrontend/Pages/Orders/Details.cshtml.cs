@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using WebFrontend.Model;
 
 namespace WebFrontend.Pages.Orders
 {
+    [Authorize(Roles = "Admin, User")]
     public class DetailsModel : PageModel
     {
         private readonly WebFrontend.Data.WebFrontendContext _context;
@@ -28,7 +30,7 @@ namespace WebFrontend.Pages.Orders
                 return NotFound();
             }
 
-            Order = await _context.Order.FirstOrDefaultAsync(m => m.OrderID == id);
+            Order = await _context.OrderList.FirstOrDefaultAsync(m => m.OrderID == id);
 
             if (Order == null)
             {
