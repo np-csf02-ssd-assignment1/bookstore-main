@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,6 +13,7 @@ using WebFrontend.Model;
 
 namespace WebFrontend.Pages.Orders
 {
+    [Authorize(Roles = "Admin, User")]
     public class CreateModel : PageModel
     {
         private readonly WebFrontend.Data.WebFrontendContext _context;
@@ -47,7 +49,7 @@ namespace WebFrontend.Pages.Orders
                 Order.TotalPrice += (item.Cost * item.Quantity);
             }
             Order.CreatedTime = DateTime.Now;
-            _context.Order.Add(Order);
+            _context.OrderList.Add(Order);
             await _context.SaveChangesAsync();
             SQLmessage = "Update ShoppingCartItems SET Paid = 'True' Where UserId = '" + Order.UserID + "' AND Paid = 'False'";
             _ = _context.ShoppingCartItems.FromSqlRaw(SQLmessage).ToListAsync();
