@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
@@ -26,6 +26,9 @@
                 <label asp-for="Input.ConfirmPassword"></label>
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="h-captcha" data-sitekey="@Model.hCaptcha.SiteKey"></div>
             </div>
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
@@ -63,5 +66,10 @@
 </div>
 
 @section Scripts {
+<<<<<<< HEAD
     <partial name="_ValidationScriptsPartial" />
+=======
+    @* <partial name="_ValidationScriptsPartial" /> *@
+    <script src="https://hcaptcha.com/1/api.js" async defer></script>
+>>>>>>> a2051ec... feat: adds hcaptcha registration
 }
