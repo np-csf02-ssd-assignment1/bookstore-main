@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -31,6 +32,12 @@ namespace WebFrontend.Pages.Orders
         public Order Order { get; set; }
         IList<Cart> AllCart { get; set; }
         public string SQLmessage { get; private set; }
+        [RegularExpression(@"[0-9]{16}")]
+        public string CardNumber { get; set; }
+        [RegularExpression(@"[0-9]{2}/[0-9]{2}")]
+        public string ExpDate { get; set; }
+        [RegularExpression(@"[0-9]{3}")]
+        public string CVV { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
