@@ -15,9 +15,9 @@ namespace WebFrontend.Pages.Admin.Books
     [Authorize(Roles = "Admin")]
     public class EditModel : PageModel
     {
-        private readonly WebFrontend.Data.WebFrontendContext _context;
+        private readonly WebFrontend.Data.WebFrontendAuditableContext _context;
 
-        public EditModel(WebFrontend.Data.WebFrontendContext context)
+        public EditModel(WebFrontend.Data.WebFrontendAuditableContext context)
         {
             _context = context;
         }

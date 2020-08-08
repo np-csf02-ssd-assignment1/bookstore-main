@@ -14,9 +14,9 @@ namespace WebFrontend.Pages.Admin.Orders
     [Authorize(Roles = "Admin")]
     public class DeleteModel : PageModel
     {
-        private readonly WebFrontend.Data.WebFrontendContext _context;
+        private readonly WebFrontend.Data.WebFrontendAuditableContext _context;
 
-        public DeleteModel(WebFrontend.Data.WebFrontendContext context)
+        public DeleteModel(WebFrontend.Data.WebFrontendAuditableContext context)
         {
             _context = context;
         }
