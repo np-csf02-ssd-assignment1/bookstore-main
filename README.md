@@ -11,6 +11,13 @@
 
 OpenBookstore is an open-source group project for CSF02 SSD Assignment 1.
 
+## How to run
+
+```sh
+cd NP-CSF02-SSD-ASSIGNMENT1
+dotnet run --project src/WebFrontend
+```
+
 ## License
 
 This project is licensed under [MIT](./LICENSE).

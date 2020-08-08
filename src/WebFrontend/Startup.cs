@@ -39,6 +39,8 @@ namespace WebFrontend
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddHttpContextAccessor();
+            services.AddHttpClient();
 
             var emailSenderDisabled = Configuration.GetValue<bool>("EmailSender:Disabled");
             var msGraphEmailSenderOptions = Configuration.GetSection("EmailSender:MSGraph");
@@ -51,16 +53,29 @@ namespace WebFrontend
             else if (msGraphEmailSenderOptions.Get<WebFrontend.Services.EmailSender.MSGraph.AuthMessageSenderOptions>() != null)
             {
                 services.AddMSGraphEmailSender(msGraphEmailSenderOptions);
-                logger.LogInformation("MS Graph configured.");
+                logger.LogInformation("MS Graph configured as EmailSender.");
             }
             else if (sendGridEmailSenderOptions.Get<WebFrontend.Services.EmailSender.SendGrid.AuthMessageSenderOptions>() != null)
             {
                 services.AddSendGridEmailSender(sendGridEmailSenderOptions);
-                logger.LogInformation("SendGrid configured.");
+                logger.LogInformation("SendGrid configured as EmailSender.");
             }
             else
             {
                 throw new Exception("EmailSender was not explicitly disabled, but no valid configuration was found.");
+            }
+
+            var captchaDisabled = Configuration.GetValue<bool>("Captcha:Disabled");
+            var hCaptchaOptions = Configuration.GetSection("Captcha:hCaptcha");
+
+            if (captchaDisabled)
+            {
+                logger.LogWarning("Captcha service explicitly disabled.");
+            }
+            else if (hCaptchaOptions.Get<WebFrontend.Services.Captcha.hCaptcha.AuthOptions>() != null)
+            {
+                services.AddOptions<WebFrontend.Services.Captcha.hCaptcha.AuthOptions>().Bind(hCaptchaOptions).ValidateDataAnnotations();
+                logger.LogInformation("hCaptcha configured as capthca service.");
             }
 
             services.ConfigureApplicationCookie(options =>

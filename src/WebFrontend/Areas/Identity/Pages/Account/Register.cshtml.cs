@@ -1,12 +1,14 @@
-﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Net.Http;
+using System.Text.Json;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +17,8 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
 using WebFrontend.Model;
+using WebFrontend.Services.Captcha.hCaptcha;
+using Microsoft.Extensions.Options;
 
 namespace WebFrontend.Areas.Identity.Pages.Account
 {
@@ -23,22 +27,42 @@ namespace WebFrontend.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        public readonly AuthOptions hCaptcha;
+        private readonly IHttpContextAccessor _httpContext;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly RoleManager<ApplicationRole> _roleManager;
+
+        private class hCaptchaResponse
+        {
+            public bool success;
+        }
+
+        private class hCaptchaRequest
+        {
+            public string response { get; set; }
+            public string secret { get; set; }
+        }
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IOptions<AuthOptions> hCaptcha,
+            IHttpContextAccessor httpContext,
+            IHttpClientFactory httpClientFactory,
+            RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
+            this.hCaptcha = hCaptcha.Value;
+            _httpContext = httpContext;
+            _httpClientFactory = httpClientFactory;
         }
 
         [BindProperty]
@@ -93,6 +117,28 @@ namespace WebFrontend.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 await CreateRole();
+                string hCaptchaResponse = HttpContext.Request.Form["h-captcha-response"];
+
+                if (hCaptchaResponse is null)
+                {
+                    return BadRequest();
+                }
+
+                var client = _httpClientFactory.CreateClient();
+                var request = new HttpRequestMessage(HttpMethod.Post, "https://hcaptcha.com/siteverify");
+                request.Content = new StringContent(JsonSerializer.Serialize(new hCaptchaRequest
+                {
+                    response = hCaptchaResponse,
+                    secret = hCaptcha.SecretKey
+                }), Encoding.UTF8, "application/json");
+                var response = await (await client.SendAsync(request)).Content.ReadAsStringAsync();
+
+                if (!JsonSerializer.Deserialize<hCaptchaResponse>(response).success)
+                {
+                    ModelState.AddModelError("Captcha failed", "User captcha failed");
+                    // return Page();
+                }
+
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
