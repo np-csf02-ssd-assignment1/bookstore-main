@@ -23,7 +23,7 @@ namespace WebFrontend.Pages.Admin.Orders
 
         public IActionResult OnGet()
         {
-        ViewData["PaymentID"] = new SelectList(_context.Set<PaymentType>(), "PaymentTypeID", "PaymentTypeID");
+            ViewData["PaymentID"] = new SelectList(_context.Set<PaymentType>(), "PaymentTypeID", "PaymentTypeID");
             return Page();
         }
 

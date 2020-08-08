@@ -39,7 +39,7 @@ namespace WebFrontend.Pages.Admin.Orders
             {
                 return NotFound();
             }
-           ViewData["PaymentID"] = new SelectList(_context.Set<PaymentType>(), "PaymentTypeID", "PaymentTypeID");
+            ViewData["PaymentID"] = new SelectList(_context.Set<PaymentType>(), "PaymentTypeID", "PaymentTypeID");
             return Page();
         }
 

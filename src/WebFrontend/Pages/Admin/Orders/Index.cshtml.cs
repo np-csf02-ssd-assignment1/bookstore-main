@@ -21,7 +21,7 @@ namespace WebFrontend.Pages.Admin.Orders
             _context = context;
         }
 
-        public IList<Order> Order { get;set; }
+        public IList<Order> Order { get; set; }
 
         public async Task OnGetAsync()
         {
