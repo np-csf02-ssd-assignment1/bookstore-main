@@ -1,0 +1,83 @@
+﻿@page
+@model WebFrontend.Pages.Admin.Orders.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<p>
+    <a asp-page="/Admin/Index">Back to admin menu </a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Order[0].UserID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order[0].CartID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order[0].CreatedTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order[0].ShippingTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order[0].PaymentType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order[0].ShippingAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order[0].BillingAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order[0].TotalPrice)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Order)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CartID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShippingTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentType.PaymentTypeID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShippingAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BillingAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalPrice)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.OrderID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.OrderID">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.OrderID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
