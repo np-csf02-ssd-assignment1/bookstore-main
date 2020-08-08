@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Text.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using WebFrontend.Data;
 using WebFrontend.Services.EmailSender.SendGrid;
 using WebFrontend.Services.EmailSender.MSGraph;
@@ -24,24 +24,43 @@ namespace WebFrontend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            /*
+                Create a "Basic Logger".
+                Since the main logger is not initialised before
+                ConfigureServices() is called, this is to enable
+                use of a temporary logger.
+            */
+            var loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddConsole();
+            });
+
+            var logger = loggerFactory.CreateLogger("WebFrontend.Startup (Basic Logger)");
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            var emailSenderDisabled = Configuration.GetValue<bool>("EmailSender:Disabled");
             var msGraphEmailSenderOptions = Configuration.GetSection("EmailSender:MSGraph");
-            var sendGridEmailSenderOptions = Configuration.GetSection("EmailSender:SendGrid").Get<WebFrontend.Services.EmailSender.SendGrid.AuthMessageSenderOptions>();
+            var sendGridEmailSenderOptions = Configuration.GetSection("EmailSender:SendGrid");
 
-            Console.WriteLine(JsonSerializer.Serialize(msGraphEmailSenderOptions));
-
-            Console.WriteLine("Checking email options");
-            if (msGraphEmailSenderOptions != null)
+            if (emailSenderDisabled)
+            {
+                logger.LogWarning("EmailSender explicitly disabled.");
+            }
+            else if (msGraphEmailSenderOptions.Get<WebFrontend.Services.EmailSender.MSGraph.AuthMessageSenderOptions>() != null)
             {
                 services.AddMSGraphEmailSender(msGraphEmailSenderOptions);
-                Console.WriteLine("MS Graph configured.");
+                logger.LogInformation("MS Graph configured.");
             }
-            else if (sendGridEmailSenderOptions != null)
+            else if (sendGridEmailSenderOptions.Get<WebFrontend.Services.EmailSender.SendGrid.AuthMessageSenderOptions>() != null)
             {
                 services.AddSendGridEmailSender(sendGridEmailSenderOptions);
-                Console.WriteLine("SendGrid configured.");
+                logger.LogInformation("SendGrid configured.");
+            }
+            else
+            {
+                throw new Exception("EmailSender was not explicitly disabled, but no valid configuration was found.");
             }
 
             services.ConfigureApplicationCookie(options =>
@@ -52,16 +71,17 @@ namespace WebFrontend
             });
 
             services.AddDbContext<WebFrontendContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("WebFrontendContext")));
+                options.UseSqlServer(Configuration.GetConnectionString("WebFrontendContext")));
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                logger.LogWarning("Development Mode is enabled.");
             }
             else
             {
@@ -84,12 +104,19 @@ namespace WebFrontend
                         configure.AddScriptSrc()
                             .Self()
                             .From("https://cdnjs.cloudflare.com")
-                            .From("https://unpkg.com");
+                            .From("https://unpkg.com")
+                            .From("https://hcaptcha.com")
+                            .From("https://*.hcaptcha.com");
                         configure.AddStyleSrc()
                             .Self()
                             .From("https://cdnjs.cloudflare.com")
-                            .From("https://fonts.googleapis.com")
-                            .From("https://unpkg.com");
+                            .From("https://unpkg.com")
+                            .From("https://hcaptcha.com")
+                            .From("https://*.hcaptcha.com")
+                            .From("https://fonts.googleapis.com");
+                        configure.AddFrameSource()
+                            .From("https://hcaptcha.com")
+                            .From("https://*.hcaptcha.com");
                         configure.AddFontSrc().From("https://fonts.gstatic.com");
                         configure.AddImgSrc().Self();
                         configure.AddBaseUri().None();
