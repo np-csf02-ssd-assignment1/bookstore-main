@@ -69,3 +69,11 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+/*
+  Hide validation summaries when ASP.NET Core validation was successful.
+  This is to bypass the inline style used by ASP.NET Core, which is invalid with our strict CSP policies.
+  */
+.validation-summary-valid {
+  display: none;
+}
