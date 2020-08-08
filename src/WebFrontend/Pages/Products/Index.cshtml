@@ -36,8 +36,7 @@
             </td>
             <td>
                 <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                @{ var itemID = "/Carts/Add";}
-                <a asp-page="@itemID" asp-route-id="@item.ID">Add to cart</a>
+                <a asp-page="/Carts/Add" asp-route-id="@item.ID">Add to cart</a>
             </td>
         </tr>
 }
