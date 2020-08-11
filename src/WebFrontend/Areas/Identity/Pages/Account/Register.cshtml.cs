@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -36,7 +36,7 @@ namespace WebFrontend.Areas.Identity.Pages.Account
 
         private class hCaptchaResponse
         {
-            public bool success;
+            public bool success { get; set; }
         }
 
         private class hCaptchaRequest
@@ -124,20 +124,35 @@ namespace WebFrontend.Areas.Identity.Pages.Account
                     return BadRequest();
                 }
 
-                var client = _httpClientFactory.CreateClient();
-                var request = new HttpRequestMessage(HttpMethod.Post, "https://hcaptcha.com/siteverify");
-                request.Content = new StringContent(JsonSerializer.Serialize(new hCaptchaRequest
+                using(var client = _httpClientFactory.CreateClient())
                 {
-                    response = hCaptchaResponse,
-                    secret = hCaptcha.SecretKey
-                }), Encoding.UTF8, "application/json");
-                var response = await (await client.SendAsync(request)).Content.ReadAsStringAsync();
+                    var content = new Dictionary<string, string>
+                    {
+                        {"response", hCaptchaResponse},
+                        {"secret", hCaptcha.SecretKey}
+                    };
 
-                if (!JsonSerializer.Deserialize<hCaptchaResponse>(response).success)
-                {
-                    ModelState.AddModelError("Captcha failed", "User captcha failed");
-                    // return Page();
+                    var response = await (
+                        await client.PostAsync(
+                            QueryHelpers.AddQueryString("https://hcaptcha.com/siteverify", content),
+                            null
+                        )).Content
+                        .ReadAsStringAsync();
+
+                    _logger.LogInformation(response);
+
+                    if (!JsonSerializer.Deserialize<hCaptchaResponse>(response).success)
+                    {
+                        ModelState.AddModelError("Captcha failed", "User captcha failed");
+                        return Page();
+                    }
                 }
+                // var request = new HttpRequestMessage(HttpMethod.Post, "https://hcaptcha.com/siteverify");
+                // var content = new StringContent(JsonSerializer.Serialize(new hCaptchaRequest
+                // {
+                //     response = hCaptchaResponse,
+                //     secret = hCaptcha.SecretKey
+                // }), Encoding.UTF8, "application/json");
 
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
